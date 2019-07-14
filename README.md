@@ -12,12 +12,15 @@ Features:
 
 ## Tags and versions
 
-There are several tags available for this container, each with different Solr and module support:
+There are several tags available for this container, each with different :
 
-| PHP version | Tags |
-| --------------- | ---- |
-| 7.2 | 7.2, 7, latest |
-| 7.2-image | 7.2-imagemagick |
+| PHP version | Tags | Drupal 8 | Drupal 7 | Drupal 6 |
+| ----------- | ---- | -------- | -------- | -------- |
+| 7.2 | 7.2, 7, latest | Yes | Mostly* | No |
+| 7.2-image | 7.2-imagemagick | Yes | Mostly* | No |
+| 5.6 | 5.6 | No | Yes | Yes |
+
+* While the `7.2` container will run Drupal 7, the version of Drush included out of the box (9.x) is incompatible.
 
 ## Configuration
 

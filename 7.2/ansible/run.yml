@@ -1,0 +1,56 @@
+---
+- hosts: web
+  tasks:
+    - name: Ensure vhost directories exist
+      file:
+        path: "{{ item.docroot }}"
+        state: directory
+        owner: "apache"
+        group: "apache"
+        mode: "u=rwx,g=rwx,o=r"
+        recurse: yes
+      loop: "{{ flightdeck_web.vhosts | default(flightdeck_web_default_vhosts) }}"
+    - name: Configure apache vhosts
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "apache"
+        group: "apache"
+        mode: "u=rw,g=r,o="
+      loop:
+        - src: "templates/httpd.conf"
+          dest: "/etc/apache2/httpd.conf"
+        - src: "templates/000_default.conf"
+          dest: "/etc/apache2/sites.d/000_default.conf"
+    - name: Configure ssl
+      template:
+        src: "templates/ssl.conf"
+        dest: "/etc/apache2/conf.d/ssl.conf"
+        owner: "apache"
+        group: "apache"
+        mode: "u=rw,g=r,o="
+    - name: Configure php
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "apache"
+        group: "apache"
+        mode: "u=rw,g=r,o="
+      loop:
+        - src: "templates/php.ini"
+          dest: "/etc/php7/php.ini"
+        - src: "templates/00_opcache.ini"
+          dest: "/etc/php7/conf.d/00_opcache.ini"
+    - name: Configure xdebug
+      template:
+        src: "templates/xdebug.ini"
+        dest: "/etc/php7/conf.d/xdebug.ini"
+        owner: "apache"
+        group: "apache"
+        mode: "u=rw,g=r,o="
+    - name: Update initial directory
+      lineinfile:
+        path: "/var/www/.bashrc"
+        regexp: "^cd \\$HOME$"
+        line: "cd {{ flightdeck_web.vhosts[0].docroot | default('$HOME') }}"
+        state: present

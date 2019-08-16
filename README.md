@@ -52,7 +52,7 @@ flightdeck_cluster:
     replicas: 1
     configMaps:
       - name: "flight-deck-web"
-        path: "/config"
+        path: "/config/web"
 ```
 
 ## Using with Docker Compose
@@ -68,7 +68,7 @@ services:
       - 80:80
       - 433:433
     volumes:
-      - ./flight-deck-web.yml:/config/flight-deck-web.yml
+      - ./flight-deck-web.yml:/config/web/flight-deck-web.yml
 ```
 
 ## Part of Flight Deck

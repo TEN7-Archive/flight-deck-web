@@ -9,64 +9,72 @@
         state: present
         update_cache: yes
       loop:
-        - "apache2"
+        - "py-mysqldb"
+        - "bash"
         - "libcap"
         - "zlib"
-        - "apache2-ssl"
-        - "php7-apache2"
-        - "php7"
+        - "apache2"
+        - "php5-apache2"
+        - "curl"
         - "git"
         - "patch"
-        - "curl"
-        - "php7-ctype"
-        - "php7-curl"
-        - "php7-dom"
-        - "php7-fileinfo"
-        - "php7-gd"
-        - "php7-iconv"
-        - "php7-json"
-        - "php7-ldap"
-        - "php7-mbstring"
-        - "php7-mcrypt"
-        - "php7-memcached"
-        - "php7-mysqli"
-        - "php7-mysqlnd"
-        - "php7-opcache"
-        - "php7-openssl"
-        - "php7-phar"
-        - "php7-sqlite3"
-        - "php7-odbc"
-        - "php7-pdo_odbc"
-        - "php7-pdo"
-        - "php7-pdo_mysql"
-        - "php7-pdo_sqlite"
-        - "php7-phar"
-        - "php7-soap"
-        - "php7-session"
-        - "php7-simplexml"
-        - "php7-tokenizer"
-        - "php7-xdebug"
-        - "php7-exif"
-        - "php7-xml"
-        - "php7-xmlreader"
-        - "php7-xmlwriter"
-        - "php7-zip"
-        - "php7-zlib"
-        - "composer"
+        - "php5-cli"
+        - "php5-curl"
+        - "php5-ctype"
+        - "php5-dom"
+        - "php5-gd"
+        - "php5-iconv"
+        - "php5-json"
+        - "php5-ldap"
+        - "php5-mcrypt"
+        - "php5-mysql"
+        - "php5-mysqli"
+        - "php5-opcache"
+        - "php5-openssl"
+        - "php5-pdo"
+        - "php5-pdo_mysql"
+        - "php5-pdo_sqlite"
+        - "php5-pdo_dblib"
+        - "php5-phar"
+        - "php5-soap"
+        - "php5-sockets"
+        - "php5-xml"
+        - "php5-xmlreader"
+        - "php5-zlib"
         - "mariadb-client"
         - "rsync"
         - "openssh-client"
-        - "nodejs-npm"
-        - "unixodbc-dev"
-        - "freetds-dev"
+        # - "nodejs-current"
+        - "npm"
+        - "imagemagick"
       notify:
-        - clear apk cache
+        - clear caches
     - name: Install the additional packages from pip
       pip:
         name:
           - "passlib"
           - "PyMySQL"
         extra_args: "--ignore-installed"
+    - name: Install build dependencies in a virtual package
+      shell: >
+        apk --no-cache \
+            --virtual flightdeck-build \
+             add autoconf \
+                 binutils-gold \
+                 g++ \
+                 gcc \
+                 gnupg \
+                 grep \
+                 imagemagick-dev \
+                 libc-dev \
+                 libstdc++ \
+                 linux-headers \
+                 make \
+                 php5-pear \
+                 php5-dev \
+                 zlib-dev
+      notify:
+        - uninstall build deps
     - name: Ensure key directories are owned by apache
       file:
         path: "{{ item }}"
@@ -79,7 +87,7 @@
         - "/etc/apache2"
         - "/etc/ssl/apache2"
         - "/etc/apache2/sites.d"
-        - "/etc/php7"
+        - "/etc/php5"
         - "/run/apache2"
         - "/var/log/apache2"
         - "/var/www"
@@ -108,10 +116,26 @@
         - "/var/log/apache2/error.log"
         - "/var/log/apache2/000_default-error_log"
         - "/var/log/apache2/000_default_ssl-error_log"
+    - name: Symlink php5 to php
+      file:
+        src: "/usr/bin/php5"
+        dest: "/usr/bin/php"
+        state: link
+        force: yes
+    - name: Install imagemagick, memcache, xdebug from pecl
+      shell: >
+        yes | pecl install memcache &&
+        pecl install xdebug-2.5.5 &&
+        pecl install imagick
+    - name: Install Composer
+      shell: >
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+      args:
+        warn: no
     - name: Install Drush
       shell: >
         composer global require consolidation/cgr &&
-        /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_web.drushVersion | default('~9.5.2') }} &&
+        /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_web.drushVersion | default('~8.3.0') }} &&
         /var/www/.composer/vendor/bin/drush core:init -y
       become: yes
       become_user: "apache"
@@ -122,18 +146,23 @@
       become: yes
       become_user: "apache"
       become_method: "su"
+    - name: Install node 10
+      shell: >
+        cd /tmp &&
+        curl -sfSLO https://nodejs.org/dist/v10.14.2/node-v10.14.2.tar.xz &&
+        tar -xf node-v10.14.2.tar.xz &&
+        cd node-v10.14.2 &&
+        ./configure --prefix=/usr --fully-static --without-npm &&
+        make -j$(getconf _NPROCESSORS_ONLN) &&
+        make install
     - name: Install theme utilities
       shell: >
         npm install -g sass gulp
-    - name: Configure ODBC
-      template:
-        src: "templates/odbcinst.ini"
-        dest: "/etc/odbcinst.ini"
-        owner: "root"
-        group: "root"
-        mode: "u=rw,g=r,o="
   handlers:
-    - name: clear apk cache
+    - name: uninstall build deps
+      shell: >
+        apk del flightdeck-build
+    - name: clear caches
       shell: >
         rm -rf {{ item }}
       args:

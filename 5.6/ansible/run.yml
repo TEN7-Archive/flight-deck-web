@@ -21,13 +21,6 @@
           dest: "/etc/apache2/httpd.conf"
         - src: "templates/000_default.conf"
           dest: "/etc/apache2/sites.d/000_default.conf"
-    - name: Configure ssl
-      template:
-        src: "templates/ssl.conf"
-        dest: "/etc/apache2/conf.d/ssl.conf"
-        owner: "apache"
-        group: "apache"
-        mode: "u=rw,g=r,o="
     - name: Configure php
       template:
         src: "{{ item.src }}"
@@ -37,13 +30,17 @@
         mode: "u=rw,g=r,o="
       loop:
         - src: "templates/php.ini"
-          dest: "/etc/php7/php.ini"
-        - src: "templates/00_opcache.ini"
-          dest: "/etc/php7/conf.d/00_opcache.ini"
+          dest: "/etc/php5/php.ini"
+        - src: "templates/opcache.ini"
+          dest: "/etc/php5/conf.d/opcache.ini"
+        - src: "templates/memcache.ini"
+          dest: "/etc/php5/conf.d/memcache.ini"
+        - src: "templates/imagick.ini"
+          dest: "/etc/php5/conf.d/imagick.ini"
     - name: Configure xdebug
       template:
         src: "templates/xdebug.ini"
-        dest: "/etc/php7/conf.d/xdebug.ini"
+        dest: "/etc/php5/conf.d/xdebug.ini"
         owner: "apache"
         group: "apache"
         mode: "u=rw,g=r,o="

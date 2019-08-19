@@ -1,5 +1,5 @@
 ---
-flighdeck_motd_name: web 7.2
+flighdeck_motd_name: web 5.6
 
 flightdeck_groups:
   - name: "apache"
@@ -29,14 +29,6 @@ flightdeck_web_default_vhosts:
     docroot: "{{ lookup('env', 'APACHE_DOCROOT_DIR') | default('/var/www/html', true )}}"
     aliases: "{{ lookup('env', 'APACHE_SITE_ALIAS') | default(['docker.localhost'], true) }}"
     env: "{{ flightdeck_web_default_vhost_envvars }}"
-  - name: "{{ lookup('env', 'APACHE_SITE_NAME') | default('docker.test', true) }}"
-    host: "*:443"
-    docroot: "{{ lookup('env', 'APACHE_DOCROOT_DIR') | default('/var/www/html', true )}}"
-    aliases: "{{ lookup('env', 'APACHE_SITE_ALIAS') | default(['docker.localhost'], true) }}"
-    env: "{{ flightdeck_web_default_vhost_envvars }}"
-    https:  yes
-    certFile: "/etc/ssl/apache2/server.pem"
-    keyFile: "/etc/ssl/apache2/server.key"
 
 flightdeck_web:
   vhosts: "{{ flightdeck_web_default_vhosts }}"

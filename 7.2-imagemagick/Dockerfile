@@ -1,7 +1,6 @@
 FROM ten7/flight-deck-web:latest
 MAINTAINER tess@ten7.com
 
-
 # Update and install.
 USER root
 RUN apk -U upgrade && \

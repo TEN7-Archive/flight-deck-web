@@ -15,6 +15,8 @@ flightdeck_user_prompt: '\u@flight-deck-web:\w$ '
 flightdeck_run_commands: |
   if [ -f "/config/web/flight-deck-web.yml" ]; then
     ansible-playbook -i /ansible/inventories/all.ini -e "@/config/web/flight-deck-web.yml" /ansible/run.yml
+  elif [ -f "/secrets/flight-deck-web.yml" ]; then
+    ansible-playbook -i /ansible/inventories/docker.ini -e "@/secrets/flight-deck-web.yml" /ansible/run.yml
   else
     ansible-playbook -i /ansible/inventories/all.ini /ansible/run.yml
   fi
@@ -41,7 +43,7 @@ flightdeck_web_default_vhosts:
 flightdeck_web:
   vhosts: "{{ flightdeck_web_default_vhosts }}"
   php:
-    sendmail_path: "{{ lookup('env', 'PHP_SENDMAIL_PATH') }}"
+    sendmail_path: "{{ lookup('env', 'PHP_SENDMAIL_PATH') | default('/usr/sbin/sendmail', true) }}"
     max_execution_time: "{{ lookup('env', 'PHP_MAX_EXEC_TIME') | default('120', true) }}"
     max_input_vars: "{{ lookup('env', 'PHP_MAX_INPUT_VARS') | default('3000', true) }}"
     memory_limit: "{{ lookup('env', 'PHP_MAX_INPUT_VARS') | default('320M', true) }}"
@@ -53,10 +55,10 @@ flightdeck_web:
     error_log: "/dev/stderr"
     variables_order: "GPCS"
   xdebug:
-    enabled: "{{ lookup('env', 'PHP_XDEBUG_ENABLED') | default(false, true) }}"
-    autostart: "{{ lookup('env', 'PHP_XDEBUG_AUTOSTART') | default(false, true) }}"
-    connectBack: "{{ lookup('env', 'PHP_XDEBUG_REMOTE_CONNECT_BACK') | default(false, true) }}"
-    stdoutLogs: "{{ lookup('env', 'PHP_XDEBUG_STDOUT_LOGS') | default(false, true) }}"
+    enabled: "{{ lookup('env', 'PHP_XDEBUG_ENABLED') | default(false, true) | bool }}"
+    autostart: "{{ lookup('env', 'PHP_XDEBUG_AUTOSTART') | default(false, true) | bool }}"
+    connectBack: "{{ lookup('env', 'PHP_XDEBUG_REMOTE_CONNECT_BACK') | default(false, true) | bool }}"
+    stdoutLogs: "{{ lookup('env', 'PHP_XDEBUG_STDOUT_LOGS') | default(false, true) | bool }}"
     remoteHost: "{{ lookup('env', 'PHP_XDEBUG_REMOTE_HOST') | default('10.254.254.254', true) }}"
   xdebugProfile:
     trigger: "{{ lookup('env', 'PHP_XDEBUG_PROFILE_TRIGGER') }}"

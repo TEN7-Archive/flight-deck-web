@@ -21,6 +21,13 @@
           dest: "/etc/apache2/httpd.conf"
         - src: "templates/000_default.conf"
           dest: "/etc/apache2/sites.d/000_default.conf"
+    - name: Configure ssl
+      template:
+        src: "templates/ssl.conf"
+        dest: "/etc/apache2/conf.d/ssl.conf"
+        owner: "apache"
+        group: "apache"
+        mode: "u=rw,g=r,o="
     - name: Configure php
       template:
         src: "{{ item.src }}"

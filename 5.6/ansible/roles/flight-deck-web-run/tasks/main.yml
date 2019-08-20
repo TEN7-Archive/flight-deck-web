@@ -4,7 +4,7 @@
 # should be accomplished by the container build scripts.
 - name: Ensure vhost directories exist
   file:
-    path: "{{ item.docroot }}"
+    path: "{{ item.docroot | default('/var/www/html') }}"
     state: directory
   loop: "{{ flightdeck_web.vhosts | default(flightdeck_web_default_vhosts) }}"
 - name: Configure apache vhosts

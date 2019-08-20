@@ -127,6 +127,9 @@
     - name: Install theme utilities
       shell: >
         npm install -g sass gulp
+      become: yes
+      become_user: "apache"
+      become_method: "su"
     - name: Configure ODBC
       template:
         src: "templates/odbcinst.ini"

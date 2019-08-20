@@ -160,6 +160,9 @@
     - name: Install theme utilities
       shell: >
         npm install -g sass gulp
+      become: yes
+      become_user: "apache"
+      become_method: "su"
   handlers:
     - name: uninstall build deps
       shell: >

@@ -66,6 +66,7 @@ flightdeck_web:
 
 flightdeck_path:
   - "/var/www/.composer/vendor/bin"
+  - "/var/www/.npm-global/bin"
 
 flightdeck_env:
   - name: "COMPOSER_MEMORY_LIMIT"

@@ -1,0 +1,11 @@
+---
+- name: clear apk cache
+  shell: >
+    rm -rf {{ item }}
+  args:
+    warn: no
+  loop:
+    - "/tmp/*"
+    - "/var/cache/apk/*"
+    - "/var/www/.composer/cache"
+    - "/var/www/.npm/_cacache"

@@ -1,0 +1,8 @@
+galaxy_info:
+  author: socketwench
+  description: Runs the Flight Deck web 5.6 container
+  company: TEN7
+  license: license (GPL-3.0-only)
+  min_ansible_version: 2.7
+  galaxy_tags: []
+dependencies: []

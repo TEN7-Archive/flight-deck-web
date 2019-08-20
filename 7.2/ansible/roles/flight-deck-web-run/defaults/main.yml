@@ -1,26 +1,4 @@
 ---
-flighdeck_motd_name: web 7.2
-
-flightdeck_groups:
-  - name: "apache"
-
-flightdeck_users:
-  - name: "apache"
-    group: "apache"
-    home: "/var/www"
-
-flightdeck_root_prompt: '\u@flight-deck-web:\w# '
-flightdeck_user_prompt: '\u@flight-deck-web:\w$ '
-
-flightdeck_run_commands: |
-  if [ -f "/config/web/flight-deck-web.yml" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/web/flight-deck-web.yml" /ansible/run.yml
-  elif [ -f "/secrets/flight-deck-web.yml" ]; then
-    ansible-playbook -i /ansible/inventories/docker.ini -e "@/secrets/flight-deck-web.yml" /ansible/run.yml
-  else
-    ansible-playbook -i /ansible/inventories/all.ini /ansible/run.yml
-  fi
-
 flightdeck_web_default_vhost_envvars:
   - name: "T7_SITE_ENVIRONMENT"
     value: "{{ lookup('env', 'T7_SITE_ENVIRONMENT') | default('docker-dev', true) }}"
@@ -63,11 +41,3 @@ flightdeck_web:
   xdebugProfile:
     trigger: "{{ lookup('env', 'PHP_XDEBUG_PROFILE_TRIGGER') }}"
     force: no
-
-flightdeck_path:
-  - "/var/www/.composer/vendor/bin"
-  - "/var/www/.npm-global/bin"
-
-flightdeck_env:
-  - name: "COMPOSER_MEMORY_LIMIT"
-    value: "-1"

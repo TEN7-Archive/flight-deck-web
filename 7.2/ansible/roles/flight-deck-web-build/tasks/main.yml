@@ -135,4 +135,4 @@
     dest: "/etc/odbcinst.ini"
     owner: "root"
     group: "root"
-    mode: "u=rw,g=r,o="
+    mode: "u=rw,g=r,o=r"

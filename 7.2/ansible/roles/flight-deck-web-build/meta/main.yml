@@ -1,6 +1,6 @@
 galaxy_info:
   author: socketwench
-  description: Builds the Flight Deck web 7.2 container
+  description: Builds the Flight Deck web container
   company: TEN7
   license: license (GPL-3.0-only)
   min_ansible_version: 2.7

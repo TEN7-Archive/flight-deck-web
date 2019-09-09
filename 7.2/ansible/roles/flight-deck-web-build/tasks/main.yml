@@ -61,7 +61,7 @@
     - "unixodbc-dev"
     - "freetds-dev"
   notify:
-    - clear apk cache
+    - clear caches
 - name: Install the additional packages from pip
   pip:
     name:

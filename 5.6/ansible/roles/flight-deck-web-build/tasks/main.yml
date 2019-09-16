@@ -42,6 +42,7 @@
     - "php5-xml"
     - "php5-xmlreader"
     - "php5-zlib"
+    - "make"
     - "mariadb-client"
     - "rsync"
     - "openssh-client"
@@ -55,7 +56,8 @@
     name:
       - "passlib"
       - "PyMySQL"
-    extra_args: "--ignore-installed"
+      - "awscli"
+    extra_args: "--ignore-installed --no-cache-dir"
 - name: Install build dependencies in a virtual package
   shell: >
     apk --no-cache \

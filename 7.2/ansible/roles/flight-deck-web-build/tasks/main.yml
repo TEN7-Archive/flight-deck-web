@@ -67,7 +67,7 @@
     name:
       - "passlib"
       - "PyMySQL"
-    extra_args: "--ignore-installed"
+    extra_args: "--ignore-installed --no-cache-dir"
 - name: Ensure key directories are owned by apache
   file:
     path: "{{ item }}"

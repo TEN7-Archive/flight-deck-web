@@ -12,3 +12,5 @@
     - "/var/cache/apk/*"
     - "/var/www/.composer/cache"
     - "/var/www/.npm/_cacache"
+    - "/root/.ansible/tmp"
+    - "/root/.cache"

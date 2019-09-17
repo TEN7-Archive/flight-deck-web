@@ -17,8 +17,10 @@
     - "apache2-proxy"
     - "php5-apache2"
     - "curl"
+    - "g++"
     - "git"
     - "patch"
+    - "php5-bcmath"
     - "php5-cli"
     - "php5-curl"
     - "php5-ctype"
@@ -56,7 +58,6 @@
     name:
       - "passlib"
       - "PyMySQL"
-      - "awscli"
     extra_args: "--ignore-installed --no-cache-dir"
 - name: Install build dependencies in a virtual package
   shell: >
@@ -64,8 +65,6 @@
         --virtual flightdeck-build \
          add autoconf \
              binutils-gold \
-             g++ \
-             gcc \
              gnupg \
              grep \
              imagemagick-dev \
@@ -155,7 +154,7 @@
     curl -sfSLO https://nodejs.org/dist/v10.14.2/node-v10.14.2.tar.xz &&
     tar -xf node-v10.14.2.tar.xz &&
     cd node-v10.14.2 &&
-    ./configure --prefix=/usr --fully-static --without-npm &&
+    ./configure --prefix=/usr --without-npm &&
     make -j$(getconf _NPROCESSORS_ONLN) &&
     make install
 - name: Install theme utilities

@@ -114,7 +114,7 @@
 - name: Install Drush
   shell: >
     composer global require consolidation/cgr &&
-    /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_drush_version | default('~9.5.2') }} &&
+    /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_drush_version | default('~9.7.1') }} &&
     /var/www/.composer/vendor/bin/drush core:init -y
   become: yes
   become_user: "apache"

@@ -18,7 +18,7 @@ flightdeck_web_default_vhosts:
     certFile: "/etc/ssl/apache2/server.pem"
     keyFile: "/etc/ssl/apache2/server.key"
 
-flightdeck_web:
+flightdeck_web_defaults:
   vhosts: "{{ flightdeck_web_default_vhosts }}"
   php:
     sendmail_path: "{{ lookup('env', 'PHP_SENDMAIL_PATH') | default('/usr/sbin/sendmail', true) }}"
@@ -41,3 +41,5 @@ flightdeck_web:
   xdebugProfile:
     trigger: "{{ lookup('env', 'PHP_XDEBUG_PROFILE_TRIGGER') }}"
     force: no
+
+flightdeck_web: flightdeck_web_defaults

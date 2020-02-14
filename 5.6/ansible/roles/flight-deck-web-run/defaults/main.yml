@@ -18,7 +18,7 @@ flightdeck_web_default_vhosts:
     certFile: "/etc/ssl/apache2/server.pem"
     keyFile: "/etc/ssl/apache2/server.key"
 
-flightdeck_web:
+flightdeck_web_defaults:
   vhosts: "{{ flightdeck_web_default_vhosts }}"
   php:
     sendmail_path: "{{ lookup('env', 'PHP_SENDMAIL_PATH') | default('/usr/sbin/sendmail', true) }}"
@@ -32,12 +32,23 @@ flightdeck_web:
     display_startup_errors: no
     error_log: "/dev/stderr"
     variables_order: "GPCS"
+    opcache_enable: yes
+    opcache_validate_timestamps: yes
+    opcache_revalidate_freq: '60'
+    opcache_max_accelerated_files: '20000'
+    opcache_memory_consumption: '192'
+    opcache_interned_strings_buffer: '16'
+    opcache_fast_shutdown: yes
   xdebug:
     enabled: "{{ lookup('env', 'PHP_XDEBUG_ENABLED') | default(false, true) | bool }}"
     autostart: "{{ lookup('env', 'PHP_XDEBUG_AUTOSTART') | default(false, true) | bool }}"
     connectBack: "{{ lookup('env', 'PHP_XDEBUG_REMOTE_CONNECT_BACK') | default(false, true) | bool }}"
     stdoutLogs: "{{ lookup('env', 'PHP_XDEBUG_STDOUT_LOGS') | default(false, true) }}"
     remoteHost: "{{ lookup('env', 'PHP_XDEBUG_REMOTE_HOST') | default('10.254.254.254', true) }}"
+    port: "9000"
+    idekey: "PHPSTORM"
   xdebugProfile:
     trigger: "{{ lookup('env', 'PHP_XDEBUG_PROFILE_TRIGGER') }}"
     force: no
+
+flightdeck_web: flightdeck_web_defaults

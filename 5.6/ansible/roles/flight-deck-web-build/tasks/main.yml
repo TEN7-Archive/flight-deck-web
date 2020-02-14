@@ -8,7 +8,6 @@
     state: present
     update_cache: yes
   loop:
-    - "py-mysqldb"
     - "bash"
     - "libcap"
     - "zlib"
@@ -51,19 +50,15 @@
     # - "nodejs-current"
     - "npm"
     - "imagemagick"
+    - "yarn"
   notify:
     - clear caches
-- name: Install the additional packages from pip
-  pip:
-    name:
-      - "passlib"
-      - "PyMySQL"
-    extra_args: "--ignore-installed --no-cache-dir"
 - name: Install build dependencies in a virtual package
   shell: >
     apk --no-cache \
         --virtual flightdeck-build \
          add autoconf \
+             g++ \
              binutils-gold \
              gnupg \
              grep \
@@ -74,6 +69,7 @@
              make \
              php5-pear \
              php5-dev \
+             python2 \
              zlib-dev
   notify:
     - uninstall build deps
@@ -126,7 +122,7 @@
     force: yes
 - name: Install imagemagick, memcache, xdebug from pecl
   shell: >
-    yes | pecl install memcache &&
+    yes | pecl install memcache-2.2.7 &&
     pecl install xdebug-2.5.5 &&
     pecl install imagick
 - name: Install Composer

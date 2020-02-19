@@ -8,6 +8,7 @@
     state: present
     update_cache: yes
   loop:
+    - "py-mysqldb"
     - "bash"
     - "libcap"
     - "zlib"
@@ -50,6 +51,7 @@
     # - "nodejs-current"
     - "npm"
     - "imagemagick"
+
     - "yarn"
   notify:
     - clear caches
@@ -73,6 +75,12 @@
              zlib-dev
   notify:
     - uninstall build deps
+- name: Install the additional packages from pip
+  pip:
+    name:
+      - "passlib"
+      - "PyMySQL"
+    extra_args: "--ignore-installed --no-cache-dir"
 - name: Ensure key directories are owned by apache
   file:
     path: "{{ item }}"

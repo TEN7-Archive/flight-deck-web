@@ -24,7 +24,7 @@ flightdeck_web_defaults:
     sendmail_path: "{{ lookup('env', 'PHP_SENDMAIL_PATH') | default('/usr/sbin/sendmail', true) }}"
     max_execution_time: "{{ lookup('env', 'PHP_MAX_EXEC_TIME') | default('120', true) }}"
     max_input_vars: "{{ lookup('env', 'PHP_MAX_INPUT_VARS') | default('3000', true) }}"
-    memory_limit: "{{ lookup('env', 'PHP_MAX_INPUT_VARS') | default('320M', true) }}"
+    memory_limit: "{{ lookup('env', 'PHP_MEMORY_LIMIT') | default('320M', true) }}"
     upload_max_filesize: "128M"
     post_max_size: "128M"
     error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"

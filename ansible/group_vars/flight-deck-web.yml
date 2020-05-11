@@ -1,5 +1,5 @@
 ---
-flighdeck_motd_name: web 7.2
+flighdeck_motd_name: web 7.3
 
 flightdeck_groups:
   - name: "apache"

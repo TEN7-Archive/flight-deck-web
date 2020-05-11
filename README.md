@@ -2,23 +2,23 @@
 
 # Flight Deck Web
 
-Flight Deck Web is a minimalist Apache/PHP container for Drupal sites on Kubernetes and Docker. You can use it both for local development and production.
+Flight Deck Web is a minimalist Apache/PHP container for Drupal and PHP-based sites on Kubernetes and Docker. You can use it both for local development and production.
 
 Features:
 * ConfigMap-friendly YAML configuration
-* PHP optimized out of the box for Drupal sites
-* Drush, Drupal Console, Node, SASS out of the box
+* PHP optimized out of the box for Drupal sites, while supporting any PHP application.
+* Drush, Drupal Console, Imagemagick, Node, SASS out of the box
 
 ## Tags and versions
 
 There are several tags available for this container, each with different software and support:
 
-| Tags | PHP version | Drupal versions | Drush | Imagemagick |
-| ---- | ----------- | --------------- | ----- | ----------- |
-| 7.2, 7, latest | 7.2 | 8 | 9.x | no |
-| 7.2-imagemagick | 7.2 | 8 | 9.x | yes |
-| 7.2-drupal7 | 7.2 | 7 | 8.x | no |
-| 5.6 | 5.6 | 7, 6 | 8.x | yes |
+| Tags | PHP version | Drupal versions | Drush |
+| ---- | ----------- | --------------- | ----- |
+| latest, 7, 7.3 | 7.3 | 8, 9 | 9.x |
+| 7.2 | 7.2 | 8 | 9.x |
+| 7.2-drupal7 | 7.2 | 7 | 8.x |
+| 5.6 | 5.6 | 7, 6 | 8.x |
 
 ## Configuration
 
@@ -195,6 +195,10 @@ services:
 ```
 
 It is highly recommended to add `docker-compose.overrides.yml` to your project's `.gitignore`.
+
+## Extending
+
+Often, you may wish to build a custom container on top of this one which includes your website. To see an example of this, see the [ten7/flight-deck-drupal](https://github.com/ten7/flight-deck-drupal) example container.
 
 ## Part of Flight Deck
 

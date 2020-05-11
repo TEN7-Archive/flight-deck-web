@@ -1,4 +1,4 @@
-FROM ten7/flight-deck-web:develop
+FROM ten7/flight-deck-web:7.2
 MAINTAINER tess@ten7.com
 
 # This has to be re-run on each variant image, apparently.

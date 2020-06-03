@@ -38,6 +38,8 @@
       dest: "/etc/php7/php.ini"
     - src: "templates/00_opcache.ini"
       dest: "/etc/php7/conf.d/00_opcache.ini"
+  vars:
+    _php: "{{ flightdeck_web.php | default({}) }}"
 - name: Configure xdebug
   template:
     src: "templates/xdebug.ini"
@@ -49,5 +51,7 @@
   lineinfile:
     path: "/var/www/.bashrc"
     regexp: "^cd \\$HOME$"
-    line: "cd {{ flightdeck_web.vhosts[0].docroot | default('$HOME') }}"
+    line: "cd {{ _vhost.docroot | default('$HOME') }}"
     state: present
+  vars:
+    _vhost: "{{ flightdeck_web.vhosts | default([]) | first | default([]) }}"

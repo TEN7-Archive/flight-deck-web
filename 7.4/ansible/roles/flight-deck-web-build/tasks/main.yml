@@ -56,6 +56,8 @@
     - "php7-xmlwriter"
     - "php7-zip"
     - "php7-zlib"
+    - "py3-passlib"
+    - "py3-mysqlclient"
     - "composer"
     - "mariadb-client"
     - "rsync"
@@ -66,12 +68,12 @@
     - "yarn"
   notify:
     - clear caches
-- name: Install the additional packages from pip
-  pip:
-    name:
-      - "passlib"
-      - "PyMySQL"
-    extra_args: "--ignore-installed --no-cache-dir"
+# - name: Install the additional packages from pip
+#   pip:
+#     name:
+#       - "passlib"
+#       - "PyMySQL"
+#     extra_args: "--ignore-installed --no-cache-dir"
 - name: Ensure key directories are owned by apache
   file:
     path: "{{ item }}"
@@ -91,6 +93,7 @@
     - "/var/www/.drush"
     - "/var/www/.drush/sites"
     - "/var/www/.npm-global"
+    - "/srv/html"
 - name: Link logs files to stdout for the Docker log collector
   file:
     src: "{{ item }}"
@@ -116,7 +119,7 @@
 - name: Install Drush
   shell: >
     composer global require consolidation/cgr &&
-    /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_drush_version | default('^9.7.1') }} &&
+    /var/www/.composer/vendor/bin/cgr drush/drush:{{ flightdeck_drush_version | default('^10.0.0') }} &&
     /var/www/.composer/vendor/bin/drush core:init -y
   become: yes
   become_user: "apache"
@@ -139,4 +142,11 @@
     dest: "/etc/odbcinst.ini"
     owner: "root"
     group: "root"
+    mode: "u=rw,g=r,o=r"
+- name: Template default index.html
+  template:
+    src: "templates/index.html"
+    dest: "/srv/html/index.html"
+    owner: "apache"
+    group: "apache"
     mode: "u=rw,g=r,o=r"

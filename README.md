@@ -15,7 +15,10 @@ There are several tags available for this container, each with different softwar
 
 | Tags | PHP version | Drupal versions | Drush |
 | ---- | ----------- | --------------- | ----- |
+| 7.4 | 7.4 | 8, 9 | 10.x |
+| 7.4-drupal | 7.4 | 7 | 8.x |
 | latest, 7, 7.3 | 7.3 | 8, 9 | 9.x |
+| 7.3-drupal7 | 7.3 | 7 | 8.x |
 | 7.2 | 7.2 | 8 | 9.x |
 | 7.2-drupal7 | 7.2 | 7 | 8.x |
 | 5.6 | 5.6 | 7, 6 | 8.x |

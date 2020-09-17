@@ -58,6 +58,7 @@
     - "php7-zlib"
     - "py3-passlib"
     - "py3-mysqlclient"
+    - "py3-jmespath"
     - "composer"
     - "mariadb-client"
     - "rsync"

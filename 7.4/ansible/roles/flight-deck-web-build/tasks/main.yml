@@ -63,18 +63,19 @@
     - "mariadb-client"
     - "rsync"
     - "openssh-client"
-    - "nodejs-npm"
     - "unixodbc-dev"
     - "freetds-dev"
-    - "yarn"
   notify:
     - clear caches
-# - name: Install the additional packages from pip
-#   pip:
-#     name:
-#       - "passlib"
-#       - "PyMySQL"
-#     extra_args: "--ignore-installed --no-cache-dir"
+# Install node from Alpine 3.12 as Node SASS doesn't support the newer node on
+# the Alpine 3.13 repos just yet.
+- name: Install node
+  command: >
+    apk add
+    --repository https://dl-cdn.alpinelinux.org/alpine/v3.12/main
+    nodejs=12.22.1-r0
+    nodejs-npm=12.22.1-r0
+    libsass=3.6.4-r0
 - name: Ensure key directories are owned by apache
   file:
     path: "{{ item }}"

@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.13
 MAINTAINER tess@ten7.com
 
 # Force the container to use the GNU version of iconv.
@@ -28,11 +28,11 @@ RUN ansible-galaxy install -fr /ansible/requirements.yml && \
 
 # Fix iconv extension
 # See https://github.com/docker-library/php/issues/240
-ENV PHP_VER="7.4.8"
+ENV PHP_VER="7.4.15"
 ARG BUILD_PACKAGES="wget build-base php7-dev"
 
 RUN apk add --no-cache --virtual .php-build-dependencies $BUILD_PACKAGES && \
-    apk add --no-cache --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ gnu-libiconv-dev && \
+    apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing/ gnu-libiconv-dev && \
     (mv /usr/bin/gnu-iconv /usr/bin/iconv; mv /usr/include/gnu-libiconv/*.h /usr/include; rm -rf /usr/include/gnu-libiconv) && \
     mkdir -p /opt && \
     cd /opt && \
